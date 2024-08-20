@@ -1,7 +1,5 @@
 <script>
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcome_fallback from '$lib/images/svelte-welcome.png';
+	import SocialList from "../lib/components/SocialList/index.svelte";
 </script>
 
 <svelte:head>
@@ -9,9 +7,9 @@
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-Hello
+<SocialList />
 
-<a href="/login">login</a>
+<!-- <a href="/login">login</a> -->
 <!-- 
 <section>
 	<h1>
