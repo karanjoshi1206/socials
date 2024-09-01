@@ -3,10 +3,14 @@
         title: string;
         handle: string;
         socialLogo: string;
-        id: number;
+        id: string;
     };
 
-    type handleSocial = () => void;
+    type handleSocial = (socialId:string) => void;
+
+    const handleQrCode = ()=>{
+        handleClick(data.id)
+    }
 
     export let data: PageData;
     export let handleClick: handleSocial;
@@ -19,7 +23,7 @@
         <div class="social-card-subtitle">@{data.handle}</div>
     </div>
     <img
-        on:click={()=>handleClick()}
+        on:click={handleQrCode}
         src="https://imgs.search.brave.com/eAVtMeJPQGhQSe7BMnZ1KIfuCbRfJFnbOWKHP0dA8NU/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly93d3cu/bGlnaHRlbnBpYy5w/cm8vaW1hZ2VzL3Fy/LWV4YW1wbGUuYXZp/Zg"
         alt="QR Code"
         class="social-card-qr"

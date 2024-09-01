@@ -1,61 +1,37 @@
 <script>
-	import SocialList from "../lib/components/SocialList/index.svelte";
+  import { goto } from "$app/navigation";
+  import SocialList from "$lib/components/SocialList/index.svelte";
+  import FloatingButton from "$lib/components/FloatingButton/index.svelte";
+  import Navbar from "$lib/components/Navbar/index.svelte";
+  const handleClick = () => {
+    goto("/newSocial");
+  };
 </script>
 
 <svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
-</svelte:head>
+  <title>Socials</title>
+  <meta name="description" content="Svelte demo app" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="use-credentials" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet"
+  /></svelte:head
+>
 
-<SocialList />
+<main class="main-container">
+  <Navbar/>
+  <SocialList />
 
-<!-- <a href="/login">login</a> -->
-<!-- 
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcome_fallback} alt="Welcome" />
-			</picture>
-		</span>
-
-		to your new<br />SvelteKit app
-	</h1>
-
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-
-	<Counter />
-</section>
+  <FloatingButton {handleClick} />
+</main>
 
 <style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
-	}
+  .main-container {
+    padding: 8px;
+  }
 
-	h1 {
-		width: 100%;
-	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
-	}
-</style> -->
+  .main-heading {
+    font-size: 32px;
+  }
+</style>

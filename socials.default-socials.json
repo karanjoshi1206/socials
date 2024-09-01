@@ -1,0 +1,135 @@
+[{
+  "_id": {
+    "$oid": "66c634ee1291177805db2f62"
+  },
+  "title": "Twitter",
+  "socialLogo": "/socials/twitter.svg",
+  "socialBaseUrl": "https://twitter.com/",
+  "socialId": "1"
+},
+{
+  "_id": {
+    "$oid": "66c634ee1291177805db2f66"
+  },
+  "title": "GitHub",
+  "socialLogo": "/socials/github.svg",
+  "socialBaseUrl": "https://github.com/",
+  "socialId": "5"
+},
+{
+  "_id": {
+    "$oid": "66c634ee1291177805db2f68"
+  },
+  "title": "Twitch",
+  "socialLogo": "/socials/twitch.svg",
+  "socialBaseUrl": "https://www.twitch.tv/",
+  "socialId": "7"
+},
+{
+  "_id": {
+    "$oid": "66c634ee1291177805db2f6c"
+  },
+  "title": "WhatsApp",
+  "socialLogo": "/socials/whatsapp.svg",
+  "socialBaseUrl": "https://wa.me/",
+  "socialId": "11"
+},
+{
+  "_id": {
+    "$oid": "66c634ee1291177805db2f64"
+  },
+  "title": "Instagram",
+  "socialLogo": "/socials/gb748d2bsyqzfsfjndms/",
+  "socialBaseUrl": "https://www.instagram.com/",
+  "socialId": "3"
+},
+{
+  "_id": {
+    "$oid": "66c634ee1291177805db2f67"
+  },
+  "title": "YouTube",
+  "socialLogo": "/socials/youtube.svg",
+  "socialBaseUrl": "https://www.youtube.com/",
+  "socialId": "6"
+},
+{
+  "_id": {
+    "$oid": "66c634ee1291177805db2f6e"
+  },
+  "title": "Pinterest",
+  "socialLogo": "/socials/pinterest.svg",
+  "socialBaseUrl": "https://www.pinterest.com/",
+  "socialId": "13"
+},
+{
+  "_id": {
+    "$oid": "66c634ee1291177805db2f65"
+  },
+  "title": "LinkedIn",
+  "socialLogo": "/socials/linkedin.svg",
+  "socialBaseUrl": "https://www.linkedin.com/in/",
+  "socialId": "4"
+},
+{
+  "_id": {
+    "$oid": "66c634ee1291177805db2f63"
+  },
+  "title": "Facebook",
+  "socialLogo": "/socials/facebook.svg",
+  "socialBaseUrl": "https://www.facebook.com/",
+  "socialId": "2"
+},
+{
+  "_id": {
+    "$oid": "66c634ee1291177805db2f6b"
+  },
+  "title": "Snapchat",
+  "socialLogo": "/socials/snapchat.svg",
+  "socialBaseUrl": "https://www.snapchat.com/add/",
+  "socialId": "10"
+},
+{
+  "_id": {
+    "$oid": "66c634ee1291177805db2f6a"
+  },
+  "title": "Reddit",
+  "socialLogo": "/socials/reddit.svg",
+  "socialBaseUrl": "https://www.reddit.com/user/",
+  "socialId": "9"
+},
+{
+  "_id": {
+    "$oid": "66c634ee1291177805db2f6d"
+  },
+  "title": "Telegram",
+  "socialLogo": "/socials/telegram.svg",
+  "socialBaseUrl": "https://t.me/",
+  "socialId": "12"
+},
+{
+  "_id": {
+    "$oid": "66c634ee1291177805db2f69"
+  },
+  "title": "Discord",
+  "socialLogo": "/socials/discord.svg",
+  "socialBaseUrl": "https://discord.com/",
+  "socialId": "8"
+},
+{
+  "_id": {
+    "$oid": "66c634ee1291177805db2f70"
+  },
+  "title": "Medium",
+  "socialLogo": "/socials/medium.svg",
+  "socialBaseUrl": "https://medium.com/@",
+  "socialId": "15"
+},
+{
+  "_id": {
+    "$oid": "66c634ee1291177805db2f6f"
+  },
+  "title": "TikTok",
+  "socialLogo": "/socials/tiktok.svg",
+  "socialBaseUrl": "https://www.tiktok.com/@",
+  "socialId": "14"
+}]
