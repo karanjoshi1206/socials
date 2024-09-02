@@ -10,7 +10,7 @@
 
   let isOpen = false;
   let selectedSocial: TNewSocial | undefined = undefined;
-  const BASE_URL = 'http://localhost:3000/'
+  const BASE_URL = 'https://socials-backend-2852.onrender.com/'
 
 
   const handleModal = (socialId?: string) => {
