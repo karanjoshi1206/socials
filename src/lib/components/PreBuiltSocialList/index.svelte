@@ -10,7 +10,7 @@
 
   let isOpen = false;
   let selectedSocial: TNewSocial | undefined = undefined;
-  const BASE_URL = 'https://socials-backend-2852.onrender.com/'
+  const BASE_URL = 'https://socials-backend-production.up.railway.app/'
 
 
   const handleModal = (socialId?: string) => {
