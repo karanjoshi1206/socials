@@ -1,30 +1,7 @@
-import axios from "axios";
 import GoogleProvider from "next-auth/providers/google";
 import { userLogin } from "./serverApi/Authentication/authentication";
 import { NextAuthOptions } from "next-auth";
-import { redirect } from "next/navigation";
-declare module "next-auth" {
-  interface Session {
-    user: {
-      id: string;
-      name?: string | null;
-      email?: string | null;
-      image?: string | null;
-      backendData?: any; // Replace 'any' with a more specific type if you know the structure
-    };
-  }
 
-  interface User {
-    backendData?: any; // Replace 'any' with a more specific type if you know the structure
-  }
-}
-
-// Extend the built-in JWT types
-declare module "next-auth/jwt" {
-  interface JWT {
-    backendData?: any; // Replace 'any' with a more specific type if you know the structure
-  }
-}
 const authConfig: NextAuthOptions = {
   secret: process.env.AUTH_SECRET,
   providers: [
@@ -40,7 +17,7 @@ const authConfig: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider === "google") {
-        const response = await userLogin({ userEmail: user.email || "", name: user.name || "" });
+        await userLogin({ userEmail: user.email || "", name: user.name || "" });
         // if (response?.status === 200) {
         //   // User exists and was successfully authenticated
         //   return true;
@@ -52,11 +29,11 @@ const authConfig: NextAuthOptions = {
         //   console.error("Failed to authenticate user with backend");
         //   return false;
         // }
-        if (response) {
-          console.log("RESPONSE IS ", response, user);
+        // if (response) {
+        //   console.log("RESPONSE IS ", response, user);
 
-          user.backendData = JSON.stringify(response);
-        }
+        //   user.backendData = JSON.stringify(response);
+        // }
       }
       return true;
     }

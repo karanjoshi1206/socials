@@ -30,6 +30,10 @@ const SocialForm = ({ socialData }: { socialData: Social }) => {
         userId: JSON.parse(localStorage.getItem("dbUserData") || "{}")._id
       })
     });
+
+    if(response.ok) {
+      alert("Handle added successfully");
+    }
   };
 
   // Generate test link URL dynamically

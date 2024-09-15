@@ -1,3 +1,4 @@
+import { Social } from "@/app/models/socials";
 import SocialCard from "../socialCard/socialCard";
 
 const SocialsList = async () => {
@@ -11,7 +12,7 @@ const SocialsList = async () => {
         <h1 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-gray-100">Choose from the default options</h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {data.map((social: any) => (
+          {data.map((social: Social) => (
             <SocialCard key={social._id} {...social} />
           ))}
         </div>
