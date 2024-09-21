@@ -7,7 +7,7 @@ import logo from "@/app/assets/logo.webp";
 
 export default function Navigation() {
   return (
-    <nav className="hidden md:flex justify-between items-center p-2 ">
+    <nav className="flex justify-between items-center p-2 ">
       <Link href={"/"} className="text-white text-lg flex items-center gap-2">
         <h1 className="text-lg font-bold">SOCIALS</h1>
         <Image src={logo} height={40} width={40} alt="SOCIALS" className="rounded-full" />
