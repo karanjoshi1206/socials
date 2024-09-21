@@ -1,11 +1,29 @@
 import { USER_SOCIAL } from "@/app/models/socials";
 import { getUserHandlesUsingId } from "@/serverApi/Users/users";
+import { revalidatePath } from "next/cache";
 import Image from "next/image";
 
+export const revalidate = 10;
+export const dynamicParams = true; // or false, to 404 on unknown paths
+
 const User = async ({ params }: { params: { userId: string } }) => {
-  console.log(params);
+  revalidatePath(`/user/${params.userId}`);
   const getUserData = await getUserHandlesUsingId({ id: params.userId });
   const userHandles = getUserData.data;
+
+  console;
+
+  if (!userHandles?.handles?.length) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 transition-colors p-4">
+        <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 max-w-lg w-full transition-colors">
+          <div className="text-center mb-6">
+            <h1 className="text-2xl font-semibold text-gray-800 dark:text-white">You dont have any social handles yet.</h1>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 transition-colors p-4">

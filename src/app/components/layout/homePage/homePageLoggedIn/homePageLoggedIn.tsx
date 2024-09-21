@@ -26,6 +26,7 @@ const HomePageLoggedIn = async () => {
 
   if (!session) {
     // redirect("/api/auth/signin");
+    localStorage.removeItem("dbUserData");
     redirect("/");
 
     return null; // Ensure no further rendering occurs after redirect
@@ -51,7 +52,7 @@ const HomePageLoggedIn = async () => {
           <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6 text-center lg:text-left">Welcome, {userInfo.name}!</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {userInfo.handles?.map((handle: USER_SOCIAL) => (
-              <UserSocialCard key={handle._id} handle={handle}/>
+              <UserSocialCard key={handle._id} handle={handle} />
             ))}
           </div>
           <div className="mt-4">
