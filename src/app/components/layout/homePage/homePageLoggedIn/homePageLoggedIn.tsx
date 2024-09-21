@@ -26,7 +26,7 @@ const HomePageLoggedIn = async () => {
 
   if (!session) {
     // redirect("/api/auth/signin");
-    localStorage.removeItem("dbUserData");
+    // localStorage.removeItem("dbUserData");
     redirect("/");
 
     return null; // Ensure no further rendering occurs after redirect
