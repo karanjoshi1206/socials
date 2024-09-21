@@ -1,3 +1,4 @@
+// @typescript-eslint/no-explicit-any
 import { ApiResponse } from "../models/serverApi";
 
 export const getUser = async ({ email }: { email: string }): Promise<ApiResponse> => {

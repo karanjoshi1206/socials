@@ -1,11 +1,10 @@
 import Image from "next/image";
 import { USER_SOCIAL } from "@/app/models/socials";
 import React from "react";
-import Link from "next/link";
 import EditUserCard from "./editUserCard";
 import DeleteUserCard from "./deleteUserCard";
 
-const UserSocialCard = ({ handle, refreshFunction }: { handle: USER_SOCIAL; refreshFunction: (email: string) => any }) => {
+const UserSocialCard = ({ handle }: { handle: USER_SOCIAL }) => {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden ">
       <div className="p-4 flex flex-col items-start">
@@ -37,7 +36,7 @@ const UserSocialCard = ({ handle, refreshFunction }: { handle: USER_SOCIAL; refr
           </a>
         </p>
 
-        <div className="flex gap-2" >
+        <div className="flex gap-2">
           <EditUserCard handle={handle} />
 
           <DeleteUserCard handle={handle} />

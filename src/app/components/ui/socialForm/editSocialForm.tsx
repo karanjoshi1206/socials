@@ -1,6 +1,6 @@
 "use client";
 import { USER_SOCIAL } from "@/app/models/socials";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -8,11 +8,10 @@ import { Label } from "@/components/ui/label";
 
 type EditSocialFormProps = {
   handle: USER_SOCIAL;
-  setIsEditing: Dispatch<SetStateAction<boolean>>;
   handleSave: (newHandle: string) => void;
 };
 
-const EditSocialForm = ({ handle, setIsEditing, handleSave }: EditSocialFormProps) => {
+const EditSocialForm = ({ handle, handleSave }: EditSocialFormProps) => {
   const [newHandle, setHandle] = useState(handle.handle);
 
   return (
