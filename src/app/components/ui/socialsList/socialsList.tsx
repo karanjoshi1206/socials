@@ -19,10 +19,10 @@ const SocialsList = async () => {
       </section>
 
       {/* Section for creating your own social */}
-      <section className="text-center">
+      {/* <section className="text-center">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">Or create your own</h1>
         <button className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors">Create New Social</button>
-      </section>
+      </section> */}
     </div>
   );
 };
