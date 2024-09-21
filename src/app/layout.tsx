@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${poppins.className} dark`}>
         <Navbar />
-        <NavigationMobile />
+        {/* <NavigationMobile /> */}
         {children}
         <Toaster position="top-center" reverseOrder={false} />
       </body>
