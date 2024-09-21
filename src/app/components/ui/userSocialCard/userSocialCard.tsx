@@ -3,6 +3,7 @@ import { USER_SOCIAL } from "@/app/models/socials";
 import React from "react";
 import EditUserCard from "./editUserCard";
 import DeleteUserCard from "./deleteUserCard";
+import CopyToClipBoard from "../copyToClipBoard/copyToClipBoard";
 
 const UserSocialCard = ({ handle }: { handle: USER_SOCIAL }) => {
   return (
@@ -40,6 +41,8 @@ const UserSocialCard = ({ handle }: { handle: USER_SOCIAL }) => {
           <EditUserCard handle={handle} />
 
           <DeleteUserCard handle={handle} />
+
+          <CopyToClipBoard text={handle.platform.socialBaseUrl + handle.handle} />
         </div>
       </div>
     </div>
