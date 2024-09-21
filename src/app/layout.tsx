@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@components/layout/navbar/navbar";
-import NavigationMobile from "./components/layout/navbar/mobile/navbarMobile";
+// import NavigationMobile from "./components/layout/navbar/mobile/navbarMobile";
 import { Toaster } from "react-hot-toast";
 const poppins = Poppins({ weight: ["100", "200", "300", "400", "500", "600", "700", "800"], subsets: ["latin", "latin-ext"] });
 
