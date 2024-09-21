@@ -4,7 +4,6 @@ import React from "react";
 import EditableProfilePage from "./editProfile";
 import { Button } from "@/components/ui/button";
 import { USER } from "@/app/models/user";
-import AuthButton from "../../ui/authButton/authButton";
 
 const Profile = () => {
   const [userData, setUserData] = React.useState<USER | null>();
