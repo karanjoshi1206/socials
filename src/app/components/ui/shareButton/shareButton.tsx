@@ -10,7 +10,7 @@ const ShareButton = () => {
     <div>
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="outline">Edit Profile</Button>
+          <Button variant="outline">Share Profile</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
