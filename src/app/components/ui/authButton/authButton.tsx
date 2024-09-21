@@ -1,5 +1,4 @@
 "use client";
-import useAuth from "@/app/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { signIn, signOut, useSession } from "next-auth/react";
 
