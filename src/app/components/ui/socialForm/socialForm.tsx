@@ -28,7 +28,6 @@ const SocialForm = ({ socialData }: { socialData: Social }) => {
       showToast("Handle added successfully", "success");
       router.push("/");
       router.refresh();
-
     } else {
       console.error(response);
       // alert("Failed to add handle");
@@ -39,7 +38,7 @@ const SocialForm = ({ socialData }: { socialData: Social }) => {
   // Generate test link URL dynamically
   const testLink = `${socialData.socialBaseUrl}${formData.handle}`;
 
-  const testRedirectLink = formData.redirectUrl;
+  // const testRedirectLink = formData.redirectUrl;
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto p-0 lg:p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg rounded-t-none">
