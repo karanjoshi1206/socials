@@ -18,8 +18,8 @@ const useAuth = () => {
       saveUserToDb(session.user as { email: string; name: string });
     } else if (status === "unauthenticated") {
       // Clear user information from local storage on sign out
-      localStorage.removeItem("user");
-      localStorage.removeItem("dbUserData");
+      // localStorage.removeItem("user");
+      // localStorage.removeItem("dbUserData");
     }
   }, [status, session]);
 
