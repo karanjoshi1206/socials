@@ -2,12 +2,11 @@
 import Link from "next/link";
 import logo from "@/app/assets/logo.webp";
 
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
-import { Menu, Phone } from "lucide-react";
+import { Menu } from "lucide-react";
 import { SessionProvider } from "next-auth/react";
 import ProfileButton from "@/app/components/ui/profileButton/profileButton";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 export default function NavigationMobile() {

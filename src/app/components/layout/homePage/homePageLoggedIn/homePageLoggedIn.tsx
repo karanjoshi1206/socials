@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import UserSocialCard from "@/app/components/ui/userSocialCard/userSocialCard";
 import RedirectButton from "./redirectButton";
+import { USER_SOCIAL } from "@/app/models/socials";
 
 async function getUserInfo(email: string) {
   try {
@@ -30,7 +31,7 @@ const HomePageLoggedIn = async () => {
     return null; // Ensure no further rendering occurs after redirect
   }
 
-  let userInfo: { userId: string; userName: string; name: string; handles: Array<any> } | null = null;
+  let userInfo: { userId: string; userName: string; name: string; handles: Array<USER_SOCIAL> } | null = null;
   try {
     const userData = await getUserInfo(session.user?.email as string);
     userInfo = {
@@ -49,8 +50,8 @@ const HomePageLoggedIn = async () => {
         <div className="w-full h-full mx-auto p-4">
           <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6 text-center lg:text-left">Welcome, {userInfo.name}!</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {userInfo.handles?.map((handle: any) => (
-              <UserSocialCard key={handle._id} handle={handle} refreshFunction={getUserInfo} />
+            {userInfo.handles?.map((handle: USER_SOCIAL) => (
+              <UserSocialCard key={handle._id} handle={handle}/>
             ))}
           </div>
           <div className="mt-4">

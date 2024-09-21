@@ -43,9 +43,9 @@ const EditUserCard = ({ handle }: { handle: USER_SOCIAL }) => {
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Edit {handle.platform.title}</DialogTitle>
-            <DialogDescription>Make changes to your profile here. Click save when you're done.</DialogDescription>
+            <DialogDescription>Make changes to your profile here. Click save when you&apos;re done.</DialogDescription>
           </DialogHeader>
-          <EditSocialForm handle={handle} handleSave={handleSave} setIsEditing={setIsEditing} />
+          <EditSocialForm handle={handle} handleSave={handleSave}/>
         </DialogContent>
       </Dialog>
     </>
