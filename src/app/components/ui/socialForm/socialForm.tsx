@@ -42,7 +42,7 @@ const SocialForm = ({ socialData }: { socialData: Social }) => {
   const testRedirectLink = formData.redirectUrl;
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg rounded-t-none">
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto p-0 lg:p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg rounded-t-none">
       {/* Pre-field title */}
       <div className="mb-6">
         <label htmlFor="preFieldTitle" className="block text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">

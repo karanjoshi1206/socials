@@ -1,4 +1,4 @@
-import SocialsList from "@/app/components/layout/socialsList/socialsList";
+import SocialsList from "@/app/components/ui/socialsList/socialsList";
 
 const CreateSocials = async () => {
   return <SocialsList />;

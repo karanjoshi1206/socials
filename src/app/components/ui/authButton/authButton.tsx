@@ -1,5 +1,6 @@
 "use client";
 import useAuth from "@/app/hooks/useAuth";
+import { Button } from "@/components/ui/button";
 import { signIn, signOut } from "next-auth/react";
 
 type AuthButtonProps = {
@@ -13,19 +14,7 @@ const AuthButton = ({ mode = "signin" }: AuthButtonProps) => {
     await signIn("google");
     localStorage.setItem("user", JSON.stringify(session?.user));
   };
-  return (
-    <>
-      {mode === "signin" ? (
-        <button className="auth-button" onClick={handleLogin}>
-          Sign In
-        </button>
-      ) : (
-        <button className="auth-button" onClick={() => signOut()}>
-          Sign Out
-        </button>
-      )}
-    </>
-  );
+  return <>{mode === "signin" ? <Button onClick={handleLogin}>Join Socials</Button> : <Button onClick={() => signOut()}>Join Socials</Button>}</>;
 };
 
 export default AuthButton;
