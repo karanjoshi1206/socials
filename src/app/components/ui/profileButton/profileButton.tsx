@@ -3,7 +3,7 @@ import Link from "next/link";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { signOut } from "next-auth/react";
 
-import { LogOut, Settings, User } from "lucide-react";
+import { LogOut, Plus, User } from "lucide-react";
 
 import useAuth from "@/app/hooks/useAuth";
 import AuthButton from "@components/ui/authButton/authButton";
@@ -11,7 +11,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const PROFILE_LINKS = [
   { title: "Profile", href: "/profile", icon: <User size={20} /> },
-  { title: "Settings", href: "/settings", icon: <Settings size={20} /> }
+  // { title: "Settings", href: "/settings", icon: <Settings size={20} /> }
+  { title: "Create Socials", href: "/choose-socials", icon: <Plus size={20} /> }
+  
 ];
 
 const ProfileButton = () => {

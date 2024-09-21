@@ -18,22 +18,6 @@ const authConfig: NextAuthOptions = {
     async signIn({ user, account }) {
       if (account?.provider === "google") {
         await userLogin({ userEmail: user.email || "", name: user.name || "" });
-        // if (response?.status === 200) {
-        //   // User exists and was successfully authenticated
-        //   return true;
-        // } else if (response?.status === 404) {
-        //   // User doesn't exist, redirect to signup page
-        //   return "/signup?email=" + encodeURIComponent(user.email!);
-        // } else {
-        //   // Other error occurred
-        //   console.error("Failed to authenticate user with backend");
-        //   return false;
-        // }
-        // if (response) {
-        //   console.log("RESPONSE IS ", response, user);
-
-        //   user.backendData = JSON.stringify(response);
-        // }
       }
       return true;
     }
