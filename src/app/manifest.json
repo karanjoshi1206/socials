@@ -4,7 +4,7 @@
   "description": "Socials is a social media platform that allows users to share their thoughts, photos, and videos with their friends and family. Users can also follow other users and see their posts in their feed. Socials is a great way to stay connected with the people you care about.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#DC2626",
+  "background_color": "#111111",
   "theme_color": "#000000",
   "icons": [
     {
