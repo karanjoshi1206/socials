@@ -6,6 +6,7 @@ import { FacebookShareButton, FacebookIcon, PinterestShareButton, PinterestIcon,
 import CopyToClipBoard from "../copyToClipBoard/copyToClipBoard";
 const ShareButton = () => {
   const shareUrl = window.location.href;
+  console.log(shareUrl);
   return (
     <div>
       <Dialog>
