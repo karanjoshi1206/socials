@@ -12,8 +12,6 @@ const User = async ({ params }: { params: { userId: string } }) => {
   const getUserData = await getUserHandlesUsingId({ id: params.userId });
   const userHandles = getUserData.data;
 
-  console;
-
   if (!userHandles?.handles?.length) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 transition-colors p-4">
