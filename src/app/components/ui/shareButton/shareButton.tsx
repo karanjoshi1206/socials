@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { FacebookShareButton, FacebookIcon, PinterestShareButton, PinterestIcon, RedditShareButton, RedditIcon, WhatsappShareButton, WhatsappIcon, LinkedinShareButton, LinkedinIcon } from "next-share";
 import CopyToClipBoard from "../copyToClipBoard/copyToClipBoard";
 const ShareButton = () => {
-  const shareUrl = window.location.href;
+  const shareUrl = 'https://socials-blond-ten.vercel.app/' + JSON.parse(localStorage.getItem('dbUserData')||'{}')?._id;
   console.log(shareUrl);
   return (
     <div>
