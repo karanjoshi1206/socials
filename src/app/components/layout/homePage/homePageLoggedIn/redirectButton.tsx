@@ -6,9 +6,13 @@ import React from "react";
 
 const RedirectButton = () => {
   const navigate = useRouter();
-  const userInfo = JSON.parse(localStorage.getItem("dbUserData") || "{}");
+  
+  const navigateUser = () => {
+    const userInfo = JSON.parse(localStorage.getItem("dbUserData") || "{}");
+    navigate.push(`${userInfo?._id}`);
+  }
 
-  return <Button onClick={() => navigate.push(`${userInfo?._id}`)}>Visit your public page</Button>;
+  return <Button onClick={navigateUser}>Visit your public page</Button>;
 };
 
 export default RedirectButton;

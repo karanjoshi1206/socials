@@ -4,9 +4,14 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 
 import { FacebookShareButton, FacebookIcon, PinterestShareButton, PinterestIcon, RedditShareButton, RedditIcon, WhatsappShareButton, WhatsappIcon, LinkedinShareButton, LinkedinIcon } from "next-share";
 import CopyToClipBoard from "../copyToClipBoard/copyToClipBoard";
+const getShareUrl = () => {
+  if (JSON.parse(localStorage.getItem("dbUserData") || "{}")?._id === undefined) {
+    return window.location.href;
+  }
+  return "https://socials-blond-ten.vercel.app/" + JSON.parse(localStorage.getItem("dbUserData") || "{}")?._id;
+};
 const ShareButton = () => {
-  const shareUrl = 'https://socials-blond-ten.vercel.app/' + JSON.parse(localStorage.getItem('dbUserData')||'{}')?._id;
-  console.log(shareUrl);
+  const shareUrl = getShareUrl();
   return (
     <div>
       <Dialog>
