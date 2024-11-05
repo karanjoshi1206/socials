@@ -11,7 +11,7 @@ const Profile = () => {
   const [userData, setUserData] = React.useState<USER | null>();
   const [isEditing, setIsEditing] = React.useState(false);
   const { status, session } = useAuth();
-  const [currentSession, setCurrentSession] = React.useState(session);
+  // const [currentSession, setCurrentSession] = React.useState(session);
 
   const fetchUserData = async () => {
     console.log("SESSION IS ",session)
