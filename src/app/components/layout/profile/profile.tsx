@@ -11,8 +11,10 @@ const Profile = () => {
   const [userData, setUserData] = React.useState<USER | null>();
   const [isEditing, setIsEditing] = React.useState(false);
   const { status, session } = useAuth();
+  const [currentSession, setCurrentSession] = React.useState(session);
 
   const fetchUserData = async () => {
+    console.log("SESSION IS ",session)
     const response = await getUser({ email: session?.user?.email || "" });
     if (response.success) {
       setUserData(response.data || null);
@@ -22,8 +24,10 @@ const Profile = () => {
     }
   };
   React.useEffect(() => {
-    fetchUserData();
-  }, [session]);
+    if(status === "authenticated"){
+      fetchUserData();
+    }
+  }, [session,status]);
   if (status === "loading") return <div>Loading...</div>;
   if (session?.user) {
     return (
