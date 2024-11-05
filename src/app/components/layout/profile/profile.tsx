@@ -14,7 +14,7 @@ const Profile = () => {
   // const [currentSession, setCurrentSession] = React.useState(session);
 
   const fetchUserData = async () => {
-    console.log("SESSION IS ",session)
+    console.log("SESSION IS ", session);
     const response = await getUser({ email: session?.user?.email || "" });
     if (response.success) {
       setUserData(response.data || null);
@@ -24,10 +24,8 @@ const Profile = () => {
     }
   };
   React.useEffect(() => {
-    if(status === "authenticated"){
-      fetchUserData();
-    }
-  }, [session,status]);
+    fetchUserData();
+  }, [session, status]);
   if (status === "loading") return <div>Loading...</div>;
   if (session?.user) {
     return (
