@@ -1,31 +1,16 @@
-import React from "react";
 import JoinUsButton from "./joinUsButton";
+import { PageShell } from "@/app/components/layout/pageShell";
 
 const HomePageLoggedOut = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-      <div className="text-center max-w-xl mx-auto p-6 space-y-6">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-          Welcome to <span className="text-blue-500">Socials</span>
-        </h1>
-
-        <p className="text-gray-600 dark:text-gray-300">
-          Easily share and manage all your social media profiles in one place.
-        </p>
-
-        <p className="text-gray-600 dark:text-gray-300">
-          <span className="font-semibold">Connect</span>, <span className="font-semibold">share</span>, and make it easier for others to find your social presence across platforms.
-        </p>
-
-        <p className="text-gray-600 dark:text-gray-300">
-          Ready to get started? Sign up today and start sharing your socials with the world!
-        </p>
-
-        <div>
-          <JoinUsButton />
-        </div>
+    <PageShell width="narrow" className="flex min-h-[70vh] flex-col items-center justify-center text-center">
+      <p className="mb-3 text-sm font-medium text-muted-foreground">Socials</p>
+      <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">All your links, one page.</h1>
+      <p className="mt-4 text-muted-foreground">Add your handles, share one URL.</p>
+      <div className="mt-8">
+        <JoinUsButton />
       </div>
-    </div>
+    </PageShell>
   );
 };
 
