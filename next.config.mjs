@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // setup the image domain to https://randomuser.me/
+  experimental: {
+    serverComponentsExternalPackages: ["mongoose"]
+  },
   images: {
     remotePatterns: [
       {
@@ -10,10 +12,10 @@ const nextConfig = {
         pathname: "/a/**"
       },
       {
-        pathname:"https",
-        hostname:"res.cloudinary.com",
-        port:"",
-        pathname:"/**"
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        port: "",
+        pathname: "/**"
       }
     ]
   }

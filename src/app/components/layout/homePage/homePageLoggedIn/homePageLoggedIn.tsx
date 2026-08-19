@@ -1,5 +1,6 @@
 import { authConfig } from "@/auth";
-import { getUserHandles } from "@/serverApi/Users/users";
+import { dbConnect } from "@/lib/db/mongoose";
+import { getUserHandlesByEmail } from "@/lib/services/users";
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import UserSocialCard from "@/app/components/ui/userSocialCard/userSocialCard";
@@ -7,18 +8,20 @@ import RedirectButton from "./redirectButton";
 import { USER_SOCIAL } from "@/app/models/socials";
 
 async function getUserInfo(email: string) {
-  try {
-    const response = await getUserHandles({ email });
+  await dbConnect();
+  const response = await getUserHandlesByEmail(email);
 
-    if (!response) {
-      throw new Error("Failed to fetch user info");
-    }
-
-    return response;
-  } catch (error) {
-    console.error("Error fetching user info:", error);
-    throw error; // Re-throw to be handled in the component
+  if (response.status !== 200 || !response.body) {
+    throw new Error("Failed to fetch user info");
   }
+
+  return response.body as {
+    userName?: string;
+    username?: string;
+    name: string;
+    handles: Array<USER_SOCIAL>;
+    _id: string;
+  };
 }
 
 const HomePageLoggedIn = async () => {
@@ -36,10 +39,10 @@ const HomePageLoggedIn = async () => {
   try {
     const userData = await getUserInfo(session.user?.email as string);
     userInfo = {
-      userName: userData.data.userName,
-      name: userData.data.name,
-      handles: userData.data.handles,
-      userId: userData.data._id
+      userName: userData.userName || userData.username || "",
+      name: userData.name,
+      handles: userData.handles,
+      userId: userData._id
     };
   } catch (error) {
     console.error("Error fetching user info:", error);

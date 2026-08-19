@@ -1,16 +1,19 @@
 import ShareButton from "@/app/components/ui/shareButton/shareButton";
 import { USER_SOCIAL } from "@/app/models/socials";
-import { getUserHandlesUsingId } from "@/serverApi/Users/users";
-import { revalidatePath } from "next/cache";
+import { dbConnect } from "@/lib/db/mongoose";
+import { getUserHandlesById } from "@/lib/services/users";
 import Image from "next/image";
 
-export const revalidate = 10;
-export const dynamicParams = true; // or false, to 404 on unknown paths
+export const dynamic = "force-dynamic";
 
 const User = async ({ params }: { params: { userId: string } }) => {
-  revalidatePath(`/user/${params.userId}`);
-  const getUserData = await getUserHandlesUsingId({ id: params.userId });
-  const userHandles = getUserData.data;
+  await dbConnect();
+  const getUserData = await getUserHandlesById(params.userId);
+  const userHandles = getUserData.body as {
+    name?: string;
+    username?: string;
+    handles?: USER_SOCIAL[];
+  } | null;
 
   if (!userHandles?.handles?.length) {
     return (
