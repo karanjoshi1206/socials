@@ -1,16 +1,19 @@
 "use client";
+
 import useToast from "@/app/hooks/useToast";
 import { Button } from "@/components/ui/button";
-import React from "react";
 
-const CopyToClipBoard = ({ text = "" }) => {
-  console.log("copy text",text);
+const CopyToClipBoard = ({ text = "", label = "Copy" }: { text?: string; label?: string }) => {
   const { showToast } = useToast();
   const handleCopy = () => {
     navigator.clipboard.writeText(text);
-    showToast("Copied to clipboard", "success");
+    showToast("Copied", "success");
   };
-  return <Button onClick={handleCopy}>Copy</Button>;
+  return (
+    <Button variant="outline" size="sm" onClick={handleCopy}>
+      {label}
+    </Button>
+  );
 };
 
 export default CopyToClipBoard;

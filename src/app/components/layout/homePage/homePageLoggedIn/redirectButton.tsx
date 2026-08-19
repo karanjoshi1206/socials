@@ -1,18 +1,16 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-import React from "react";
+const RedirectButton = ({ userId }: { userId?: string }) => {
+  const href = userId ? `/${userId}` : "/";
 
-const RedirectButton = () => {
-  const navigate = useRouter();
-  
-  const navigateUser = () => {
-    const userInfo = JSON.parse(localStorage.getItem("dbUserData") || "{}");
-    navigate.push(`${userInfo?._id}`);
-  }
-
-  return <Button onClick={navigateUser}>Visit your public page</Button>;
+  return (
+    <Button asChild variant="outline">
+      <Link href={href}>View public page</Link>
+    </Button>
+  );
 };
 
 export default RedirectButton;
