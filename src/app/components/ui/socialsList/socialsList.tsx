@@ -24,7 +24,7 @@ const SocialsList = async () => {
       {data.length === 0 ? (
         <p className="text-sm text-muted-foreground">No platforms found. Check the database connection.</p>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-3">
           {data.map((social: Social) => (
             <SocialCard key={social._id} {...social} />
           ))}

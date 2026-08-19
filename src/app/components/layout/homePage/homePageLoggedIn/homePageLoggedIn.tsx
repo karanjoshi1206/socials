@@ -67,7 +67,7 @@ const HomePageLoggedIn = async () => {
       </div>
 
       {handles.length === 0 ? (
-        <div className="rounded-2xl border border-dashed px-6 py-16 text-center">
+        <div className="rounded-2xl border border-dashed bg-card px-6 py-16 text-center shadow-sm">
           <p className="font-medium">No links yet</p>
           <p className="mt-1 text-sm text-muted-foreground">Add Instagram, GitHub, or anything else you share.</p>
           <Button asChild className="mt-6">

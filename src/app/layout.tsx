@@ -7,8 +7,8 @@ import { Providers } from "./components/layout/providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Socials",
-  description: "All your socials in one place",
+  title: "socials",
+  description: "All your socials in one simple public page. Add your handles and share a single link.",
   generator: "Next.js",
   manifest: "/manifest.json"
 };

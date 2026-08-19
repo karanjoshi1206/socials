@@ -73,7 +73,7 @@ const Profile = () => {
     <PageShell width="narrow">
       <h1 className="text-2xl font-semibold tracking-tight">{userData?.name || "Profile"}</h1>
       <p className="mt-1 mb-8 text-sm text-muted-foreground">{userData?.userName ? `@${userData.userName}` : "Add a username so your page is easier to share."}</p>
-      <div className="divide-y rounded-2xl border">
+      <div className="divide-y overflow-hidden rounded-2xl border bg-card shadow-sm">
         {rows.map((row) => (
           <div key={row.label} className="flex items-center justify-between px-4 py-3 text-sm">
             <span className="text-muted-foreground">{row.label}</span>

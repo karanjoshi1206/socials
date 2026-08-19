@@ -4,6 +4,7 @@ import { dbConnect } from "@/lib/db/mongoose";
 import { getUserHandlesById } from "@/lib/services/users";
 import Image from "next/image";
 import { PageShell } from "@/app/components/layout/pageShell";
+import { ArrowUpRight } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -31,20 +32,23 @@ const User = async ({ params }: { params: { userId: string } }) => {
         <h1 className="text-2xl font-semibold tracking-tight">{userHandles.name}</h1>
         {userHandles.username && <p className="mt-1 text-sm text-muted-foreground">@{userHandles.username}</p>}
       </div>
-      <div className="space-y-2">
+      <div className="space-y-3">
         {userHandles.handles.map((handleObj: USER_SOCIAL) => (
           <a
             key={handleObj._id}
             href={`${handleObj.platform.socialBaseUrl}${handleObj.handle}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 rounded-2xl border bg-card px-4 py-3 transition-colors hover:bg-muted"
+            className="group flex items-center gap-3 rounded-2xl border bg-card px-4 py-3.5 shadow-sm transition-all hover:-translate-y-px hover:shadow-md"
           >
-            <Image src={`${process.env.NEXT_PUBLIC_CDN_URL}/${handleObj.platform.socialLogo}`} alt="" width={32} height={32} className="rounded-full" />
-            <div className="min-w-0">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-muted">
+              <Image src={`${process.env.NEXT_PUBLIC_CDN_URL}/${handleObj.platform.socialLogo}`} alt="" width={28} height={28} className="rounded-md" />
+            </div>
+            <div className="min-w-0 flex-1">
               <p className="font-medium leading-tight">{handleObj.platform.title}</p>
               <p className="truncate text-sm text-muted-foreground">{handleObj.handle}</p>
             </div>
+            <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </a>
         ))}
       </div>
