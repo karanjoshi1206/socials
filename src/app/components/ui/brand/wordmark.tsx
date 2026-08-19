@@ -13,7 +13,7 @@ export function Wordmark({ className, href = "/" }: { className?: string; href?:
   }
 
   return (
-    <Link href={href} className="inline-flex items-baseline text-foreground">
+    <Link href={href} className="inline-flex items-baseline text-foreground transition-opacity hover:opacity-70">
       {mark}
     </Link>
   );

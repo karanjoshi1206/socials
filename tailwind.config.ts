@@ -55,6 +55,21 @@ const config: Config = {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
+  		},
+  		keyframes: {
+  			"fade-up": {
+  				"0%": { opacity: "0", transform: "translateY(10px)" },
+  				"100%": { opacity: "1", transform: "translateY(0)" }
+  			},
+  			"press-pop": {
+  				"0%": { transform: "scale(1)" },
+  				"40%": { transform: "scale(0.985)" },
+  				"100%": { transform: "scale(1)" }
+  			}
+  		},
+  		animation: {
+  			"fade-up": "fade-up 0.55s ease-out both",
+  			"press-pop": "press-pop 0.35s ease-out"
   		}
   	}
   },
