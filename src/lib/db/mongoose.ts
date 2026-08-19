@@ -1,5 +1,6 @@
 import "server-only";
 import mongoose from "mongoose";
+import { mongoConnectErrorMessage } from "./connectError";
 
 interface MongooseCache {
   conn: typeof mongoose | null;
@@ -32,8 +33,14 @@ export async function dbConnect(): Promise<typeof mongoose> {
     cached.promise = mongoose.connect(uri, { bufferCommands: false });
   }
 
-  cached.conn = await cached.promise;
-  return cached.conn;
+  try {
+    cached.conn = await cached.promise;
+    return cached.conn;
+  } catch (error) {
+    cached.promise = null;
+    cached.conn = null;
+    throw new Error(mongoConnectErrorMessage(error));
+  }
 }
 
 export async function dbDisconnect(): Promise<void> {

@@ -29,6 +29,13 @@ Set these in `.env.local` and in the Vercel project settings:
 
 MongoDB Atlas must allow the Vercel deployment IPs (or `0.0.0.0/0` if you accept that for a free-tier app).
 
+If `/api/serverApi/health` or `/api/serverApi/auth/signin` returns `querySrv ENOTFOUND`, the hostname in `SOCIALS_MONGO_DB_URL` is not a live Atlas cluster. Public DNS currently does not resolve `socials.qb9ku.mongodb.net`. In Atlas:
+
+1. Resume or recreate the cluster if it was paused/deleted.
+2. Cluster → Connect → Drivers → copy a new connection string (`mongodb+srv://...` or the standard `mongodb://...` host list).
+3. Put that exact value in Vercel → Settings → Environment Variables → `SOCIALS_MONGO_DB_URL`.
+4. Redeploy. Then `GET /api/serverApi/health` should return `{ "ok": true, "mongo": "connected" }`.
+
 ## API
 
 | Method | Path | Purpose |
