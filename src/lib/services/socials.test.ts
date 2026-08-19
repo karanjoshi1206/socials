@@ -24,13 +24,15 @@ describe("social services", () => {
   });
 
   it("lists default socials", async () => {
-    vi.mocked(Socials.find).mockResolvedValue([{ title: "X" }] as never);
+    const lean = vi.fn().mockResolvedValue([{ title: "X" }]);
+    vi.mocked(Socials.find).mockReturnValue({ lean } as never);
 
     await expect(getDefaultSocials()).resolves.toEqual({ status: 200, body: [{ title: "X" }] });
   });
 
   it("returns 404 when a social is missing", async () => {
-    vi.mocked(Socials.findById).mockResolvedValue(null);
+    const lean = vi.fn().mockResolvedValue(null);
+    vi.mocked(Socials.findById).mockReturnValue({ lean } as never);
 
     await expect(getSocialById("missing")).resolves.toEqual({
       status: 404,
