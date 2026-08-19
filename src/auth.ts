@@ -1,6 +1,7 @@
 import GoogleProvider from "next-auth/providers/google";
-import { userLogin } from "./serverApi/Authentication/authentication";
 import { NextAuthOptions } from "next-auth";
+import { dbConnect } from "@/lib/db/mongoose";
+import { loginUser } from "@/lib/services/auth";
 
 const authConfig: NextAuthOptions = {
   secret: process.env.AUTH_SECRET,
@@ -17,7 +18,12 @@ const authConfig: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider === "google") {
-        await userLogin({ userEmail: user.email || "", name: user.name || "" });
+        try {
+          await dbConnect();
+          await loginUser({ email: user.email || "", name: user.name || "" });
+        } catch (error) {
+          console.error("Failed to persist user on Google sign-in", error);
+        }
       }
       return true;
     }

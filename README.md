@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a [Next.js](https://nextjs.org) app that stores users and social handles in MongoDB.
 
-## Getting Started
+The previous Express backend is no longer required. All API routes live in this app under `/api/serverApi` so you can deploy the whole product on Vercel.
 
-First, run the development server:
+## Local development
 
 ```bash
+npm install
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Set these in `.env.local` and in the Vercel project settings:
 
-## Learn More
+| Variable | Purpose |
+| --- | --- |
+| `SOCIALS_MONGO_DB_URL` | MongoDB connection string (same database the Express app used) |
+| `AUTH_SECRET` | NextAuth secret |
+| `GOOGLE_CLIENT_ID` | Google OAuth client ID |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret |
+| `NEXTAUTH_URL` | App URL, e.g. `http://localhost:3000` or `https://your-app.vercel.app` |
+| `NEXT_PUBLIC_CDN_URL` | Cloudinary/CDN base URL for social logos |
 
-To learn more about Next.js, take a look at the following resources:
+`NEXT_PUBLIC_API_URL` is no longer used. Browser requests go to `/api/serverApi` on the same origin.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+MongoDB Atlas must allow the Vercel deployment IPs (or `0.0.0.0/0` if you accept that for a free-tier app).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## API
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `POST` | `/api/serverApi/auth/signin` | Find or create a user on Google sign-in |
+| `GET` | `/api/serverApi/socials/getDefault` | List social platforms |
+| `GET` | `/api/serverApi/socials/getSocial/:id` | Get one social platform |
+| `GET` | `/api/serverApi/users/:email` | Get a user by email |
+| `PUT` | `/api/serverApi/users` | Update name/username |
+| `POST` | `/api/serverApi/users/addHandle` | Add a social handle |
+| `GET` | `/api/serverApi/users/handles/:email` | Get handles by email |
+| `GET` | `/api/serverApi/users/handles/byId/:id` | Get public profile by user id |
+| `PUT` | `/api/serverApi/users/handles` | Update a handle |
+| `DELETE` | `/api/serverApi/users/handles` | Delete a handle |
+| `GET` | `/api/serverApi/health` | Mongo connectivity check |
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Import this GitHub repo in Vercel.
+2. Add the environment variables above.
+3. Deploy. The app and API ship together; no separate backend service is needed.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm test
+npm run build
+```

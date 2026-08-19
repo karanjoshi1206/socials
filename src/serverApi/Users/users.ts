@@ -1,10 +1,10 @@
-// @typescript-eslint/no-explicit-any
 import { Social } from "@/app/models/socials";
+import { getApiBaseUrl } from "@/lib/api/baseUrl";
 import { ApiResponse } from "../models/serverApi";
 
 export const getUser = async ({ email }: { email: string }): Promise<ApiResponse> => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${email}`, {
+    const response = await fetch(`${getApiBaseUrl()}/users/${encodeURIComponent(email)}`, {
       method: "GET"
     });
 
@@ -27,7 +27,7 @@ export const getUser = async ({ email }: { email: string }): Promise<ApiResponse
 
 export const getUserHandles = async ({ email }: { email: string }): Promise<ApiResponse> => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/handles/${email}`, {
+    const response = await fetch(`${getApiBaseUrl()}/users/handles/${encodeURIComponent(email)}`, {
       method: "GET"
     });
 
@@ -51,7 +51,7 @@ export const getUserHandles = async ({ email }: { email: string }): Promise<ApiR
 
 export const getUserHandlesUsingId = async ({ id }: { id: string }): Promise<ApiResponse> => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/handles/byId/${id}`, {
+    const response = await fetch(`${getApiBaseUrl()}/users/handles/byId/${id}`, {
       method: "GET"
     });
 
@@ -75,7 +75,7 @@ export const getUserHandlesUsingId = async ({ id }: { id: string }): Promise<Api
 
 export const addUserHandle = async ({ socialData, formData }: { socialData: Social; formData: any }): Promise<ApiResponse> => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/addHandle`, {
+    const response = await fetch(`${getApiBaseUrl()}/users/addHandle`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -87,7 +87,6 @@ export const addUserHandle = async ({ socialData, formData }: { socialData: Soci
       })
     });
     const data = await response.json();
-    console.log("DATA IS ,", data);
     return {
       status: response.status,
       success: response.ok,
@@ -95,7 +94,6 @@ export const addUserHandle = async ({ socialData, formData }: { socialData: Soci
       data
     };
   } catch (error: any) {
-    console.log("ERROR ", error);
     return {
       status: error?.status || 500,
       success: false,
@@ -107,7 +105,7 @@ export const addUserHandle = async ({ socialData, formData }: { socialData: Soci
 
 export const updateUserHandle = async ({ email, platformId, handle }: { email: string; platformId: string; handle: string }): Promise<ApiResponse> => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/handles`, {
+    const response = await fetch(`${getApiBaseUrl()}/users/handles`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json"
@@ -135,7 +133,7 @@ export const updateUserHandle = async ({ email, platformId, handle }: { email: s
 
 export const deleteUserHandle = async ({ email, platformId }: { email: string; platformId: string }) => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/handles`, {
+    const response = await fetch(`${getApiBaseUrl()}/users/handles`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"
@@ -163,7 +161,7 @@ export const deleteUserHandle = async ({ email, platformId }: { email: string; p
 
 export const updateUserInfo = async ({ email, name, userName }: { email: string; name: string; userName: string }): Promise<ApiResponse> => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
+    const response = await fetch(`${getApiBaseUrl()}/users`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json"

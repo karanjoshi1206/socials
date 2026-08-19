@@ -1,9 +1,12 @@
 import { Social } from "@/app/models/socials";
+import { dbConnect } from "@/lib/db/mongoose";
+import { getDefaultSocials } from "@/lib/services/socials";
 import SocialCard from "../socialCard/socialCard";
 
 const SocialsList = async () => {
-  const socials = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/socials/getDefault`);
-  const data = await socials.json();
+  await dbConnect();
+  const socials = await getDefaultSocials();
+  const data = Array.isArray(socials.body) ? (socials.body as Social[]) : [];
 
   return (
     <div className="p-6">
