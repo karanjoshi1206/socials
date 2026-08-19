@@ -1,76 +1,91 @@
 "use client";
+
 import useAuth from "@/app/hooks/useAuth";
 import { getUser } from "@/serverApi/Users/users";
-import React from "react";
+import { useEffect, useState } from "react";
 import EditableProfilePage from "./editProfile";
 import { Button } from "@/components/ui/button";
 import { USER } from "@/app/models/user";
 import AuthButton from "../../ui/authButton/authButton";
+import { PageShell } from "@/app/components/layout/pageShell";
 
 const Profile = () => {
-  const [userData, setUserData] = React.useState<USER | null>();
-  const [isEditing, setIsEditing] = React.useState(false);
+  const [userData, setUserData] = useState<USER | null>();
+  const [isEditing, setIsEditing] = useState(false);
+  const [reloadToken, setReloadToken] = useState(0);
   const { status, session } = useAuth();
-  // const [currentSession, setCurrentSession] = React.useState(session);
+  const email = session?.user?.email || "";
 
-  const fetchUserData = async () => {
-    console.log("SESSION IS ", session);
-    const response = await getUser({ email: session?.user?.email || "" });
-    if (response.success) {
-      setUserData(response.data || null);
-    } else {
-      console.error(response);
-      setUserData(null);
+  useEffect(() => {
+    if (!email) {
+      return;
     }
-  };
-  React.useEffect(() => {
-    fetchUserData();
-  }, [session, status]);
-  if (status === "loading") return <div>Loading...</div>;
-  if (session?.user) {
+
+    let cancelled = false;
+    getUser({ email }).then((response) => {
+      if (!cancelled) {
+        setUserData(response.success ? response.data || null : null);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [email, reloadToken]);
+
+  if (status === "loading") {
     return (
-      <>
-        {!isEditing && (
-          <div className="min-h-screen flex items-center justify-center flex-col bg-gray-50 dark:bg-gray-900">
-            <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-8 max-w-md w-full">
-              {/* Profile Information */}
-              <div className="text-center mb-6">
-                <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{userData?.name}</h1>
-                <p className="text-sm text-gray-500 dark:text-gray-400">@{userData?.userName}</p>
-              </div>
-
-              {/* Details */}
-              <div className="space-y-4">
-                {/* Email */}
-                <div className="flex items-center justify-between bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
-                  <span className="text-gray-600 dark:text-gray-300">Email</span>
-                  <span className="text-gray-800 dark:text-white">{userData?.email}</span>
-                </div>
-
-                {/* Name */}
-                <div className="flex items-center justify-between bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
-                  <span className="text-gray-600 dark:text-gray-300">Name</span>
-                  <span className="text-gray-800 dark:text-white">{userData?.name}</span>
-                </div>
-
-                {/* Username */}
-                <div className="flex items-center justify-between bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
-                  <span className="text-gray-600 dark:text-gray-300">Username</span>
-                  <span className="text-gray-800 dark:text-white">@{userData?.userName}</span>
-                </div>
-              </div>
-            </div>
-            <Button onClick={() => setIsEditing(!isEditing)} className="mt-4">
-              {isEditing ? "Cancel" : "Edit Profile"}
-            </Button>
-          </div>
-        )}
-        {isEditing && <EditableProfilePage userData={userData} />}
-      </>
+      <PageShell width="narrow">
+        <div className="h-40 animate-pulse rounded-2xl bg-muted" />
+      </PageShell>
     );
-  } else {
-    return <AuthButton />;
   }
+
+  if (!session?.user) {
+    return (
+      <PageShell width="narrow" className="text-center">
+        <p className="mb-4 text-muted-foreground">Sign in to view your profile.</p>
+        <AuthButton />
+      </PageShell>
+    );
+  }
+
+  if (isEditing) {
+    return (
+      <EditableProfilePage
+        userData={userData}
+        onCancel={() => setIsEditing(false)}
+        onSaved={() => {
+          setIsEditing(false);
+          setReloadToken((token) => token + 1);
+        }}
+      />
+    );
+  }
+
+  const rows = [
+    { label: "Email", value: userData?.email },
+    { label: "Name", value: userData?.name },
+    { label: "Username", value: userData?.userName ? `@${userData.userName}` : "Not set" }
+  ];
+
+  return (
+    <PageShell width="narrow">
+      <h1 className="text-2xl font-semibold tracking-tight">{userData?.name || "Profile"}</h1>
+      <p className="mt-1 mb-8 text-sm text-muted-foreground">{userData?.userName ? `@${userData.userName}` : "Add a username so your page is easier to share."}</p>
+      <div className="divide-y overflow-hidden rounded-2xl border bg-card shadow-sm">
+        {rows.map((row) => (
+          <div key={row.label} className="flex items-center justify-between px-4 py-3 text-sm">
+            <span className="text-muted-foreground">{row.label}</span>
+            <span>{row.value || "—"}</span>
+          </div>
+        ))}
+      </div>
+      <Button className="mt-6 w-full" onClick={() => setIsEditing(true)}>
+        Edit profile
+      </Button>
+    </PageShell>
+  );
 };
 
 export default Profile;

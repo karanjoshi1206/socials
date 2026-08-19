@@ -6,6 +6,9 @@ import { redirect } from "next/navigation";
 import UserSocialCard from "@/app/components/ui/userSocialCard/userSocialCard";
 import RedirectButton from "./redirectButton";
 import { USER_SOCIAL } from "@/app/models/socials";
+import { PageShell } from "@/app/components/layout/pageShell";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 async function getUserInfo(email: string) {
   await dbConnect();
@@ -28,11 +31,8 @@ const HomePageLoggedIn = async () => {
   const session = await getServerSession(authConfig);
 
   if (!session) {
-    // redirect("/api/auth/signin");
-    // localStorage.removeItem("dbUserData");
     redirect("/");
-
-    return null; // Ensure no further rendering occurs after redirect
+    return null;
   }
 
   let userInfo: { userId: string; userName: string; name: string; handles: Array<USER_SOCIAL> } | null = null;
@@ -48,26 +48,40 @@ const HomePageLoggedIn = async () => {
     console.error("Error fetching user info:", error);
   }
 
+  const firstName = userInfo?.name?.split(" ")[0] || "there";
+  const handles = userInfo?.handles ?? [];
+
   return (
-    <div className="min-h-screen ">
-      {userInfo ? (
-        <div className="w-full h-full mx-auto p-4">
-          <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6 text-center lg:text-left">Welcome, {userInfo.name}!</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {userInfo.handles?.map((handle: USER_SOCIAL) => (
-              <UserSocialCard key={handle._id} handle={handle} />
-            ))}
-          </div>
-          <div className="mt-4">
-            <RedirectButton />
-          </div>
+    <PageShell>
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight">Hi, {firstName}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Your socials, ready to share.</p>
+        </div>
+        <div className="flex gap-2">
+          <Button asChild variant="outline">
+            <Link href="/choose-socials">Add</Link>
+          </Button>
+          {userInfo?.userId && <RedirectButton userId={userInfo.userId} />}
+        </div>
+      </div>
+
+      {handles.length === 0 ? (
+        <div className="rounded-2xl border border-dashed bg-card px-6 py-16 text-center shadow-sm">
+          <p className="font-medium">No links yet</p>
+          <p className="mt-1 text-sm text-muted-foreground">Add Instagram, GitHub, or anything else you share.</p>
+          <Button asChild className="mt-6">
+            <Link href="/choose-socials">Add a social</Link>
+          </Button>
         </div>
       ) : (
-        <div className="text-lg text-gray-700 dark:text-gray-300">
-          <p>Loading user information...</p>
+        <div className="space-y-3">
+          {handles.map((handle: USER_SOCIAL) => (
+            <UserSocialCard key={handle._id} handle={handle} />
+          ))}
         </div>
       )}
-    </div>
+    </PageShell>
   );
 };
 

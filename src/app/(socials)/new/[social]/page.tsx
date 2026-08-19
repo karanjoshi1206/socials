@@ -2,6 +2,8 @@ import SocialForm from "@/app/components/ui/socialForm/socialForm";
 import { dbConnect } from "@/lib/db/mongoose";
 import { getSocialById } from "@/lib/services/socials";
 import { Social as SocialModel } from "@/app/models/socials";
+import { PageShell } from "@/app/components/layout/pageShell";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -12,26 +14,27 @@ export default async function Social({ params }: { params: { social: string } })
 
   if (response.status !== 200 || !data?._id) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <p className="text-gray-700 dark:text-gray-300">Social platform not found.</p>
-      </div>
+      <PageShell width="narrow" className="text-center">
+        <p>That platform was not found.</p>
+        <Link href="/choose-socials" className="mt-4 inline-block text-sm text-muted-foreground hover:text-foreground">
+          Choose another
+        </Link>
+      </PageShell>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl w-full mx-auto bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg">
-        {/* Title Section */}
-        <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">Create Your Social</h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Fill out the form below to add your handle and redirect URL for {data.title}.
-          </p>
-        </div>
-
-        {/* Social Form */}
-        <SocialForm socialData={data} />
-      </div>
-    </div>
+    <PageShell width="narrow">
+      <p className="mb-2 text-sm text-muted-foreground">
+        <Link href="/choose-socials" className="hover:text-foreground">
+          Add
+        </Link>
+        <span className="mx-2">/</span>
+        {data.title}
+      </p>
+      <h1 className="text-2xl font-semibold tracking-tight">Add {data.title}</h1>
+      <p className="mt-1 mb-8 text-sm text-muted-foreground">Enter the username people should find you by.</p>
+      <SocialForm socialData={data} />
+    </PageShell>
   );
 }

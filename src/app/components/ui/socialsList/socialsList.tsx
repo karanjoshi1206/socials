@@ -2,6 +2,8 @@ import { Social } from "@/app/models/socials";
 import { dbConnect } from "@/lib/db/mongoose";
 import { getDefaultSocials } from "@/lib/services/socials";
 import SocialCard from "../socialCard/socialCard";
+import { PageShell } from "@/app/components/layout/pageShell";
+import Link from "next/link";
 
 const SocialsList = async () => {
   await dbConnect();
@@ -9,24 +11,26 @@ const SocialsList = async () => {
   const data = Array.isArray(socials.body) ? (socials.body as Social[]) : [];
 
   return (
-    <div className="p-6">
-      {/* Section for default options */}
-      <section className="mb-12">
-        <h1 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-gray-100">Choose from the default options</h1>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <PageShell>
+      <p className="mb-2 text-sm text-muted-foreground">
+        <Link href="/" className="hover:text-foreground">
+          Home
+        </Link>
+        <span className="mx-2">/</span>
+        Add
+      </p>
+      <h1 className="text-2xl font-semibold tracking-tight">Choose a platform</h1>
+      <p className="mt-1 mb-8 text-sm text-muted-foreground">Pick one, then add your handle.</p>
+      {data.length === 0 ? (
+        <p className="text-sm text-muted-foreground">No platforms found. Check the database connection.</p>
+      ) : (
+        <div className="space-y-3">
           {data.map((social: Social) => (
             <SocialCard key={social._id} {...social} />
           ))}
         </div>
-      </section>
-
-      {/* Section for creating your own social */}
-      {/* <section className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">Or create your own</h1>
-        <button className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors">Create New Social</button>
-      </section> */}
-    </div>
+      )}
+    </PageShell>
   );
 };
 

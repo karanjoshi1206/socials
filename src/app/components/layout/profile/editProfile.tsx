@@ -1,87 +1,81 @@
+"use client";
+
 import useToast from "@/app/hooks/useToast";
 import { USER } from "@/app/models/user";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Field, PrefixField } from "@/app/components/ui/form/field";
 import { updateUserInfo } from "@/serverApi/Users/users";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
+import { PageShell } from "@/app/components/layout/pageShell";
 
-const EditableProfilePage = ({ userData }: { userData?: USER | null }) => {
+const EditableProfilePage = ({
+  userData,
+  onCancel,
+  onSaved
+}: {
+  userData?: USER | null;
+  onCancel: () => void;
+  onSaved: () => void;
+}) => {
   const router = useRouter();
   const { showToast } = useToast();
-  const [email, setEmail] = useState(userData?.email || "");
   const [name, setName] = useState(userData?.name || "");
   const [username, setUsername] = useState(userData?.userName || "");
+  const [saving, setSaving] = useState(false);
 
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await updateUserInfo({ email, name, userName: username });
+    setSaving(true);
+    const response = await updateUserInfo({
+      email: userData?.email || "",
+      name: name.trim(),
+      userName: username.replace(/^@/, "").trim()
+    });
+    setSaving(false);
     if (response.success) {
-      showToast("Profile updated successfully", "success");
+      showToast("Saved", "success");
       router.refresh();
+      onSaved();
     } else {
-      console.error(response);
-      showToast(response.data.message || "Failed to update profile", "error");
+      showToast(response.data?.message || "Could not update profile", "error");
     }
-    // Add your logic
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-      <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-8 max-w-md w-full">
-        {/* Profile Information */}
-        <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Edit Profile</h1>
-        </div>
-
-        {/* Editable Form */}
-        <div className="space-y-4">
-          {/* Email */}
-          <div className="flex flex-col">
-            <label className="text-gray-600 dark:text-gray-300 mb-2 font-semibold">Email</label>
-
+    <PageShell width="narrow">
+      <h1 className="text-2xl font-semibold tracking-tight">Edit profile</h1>
+      <p className="mt-1 mb-8 text-sm text-muted-foreground">This name and username show on your public page.</p>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <Field id="email" label="Email" hint="Signed in with Google — this cannot change here.">
+          <Input id="email" type="email" value={userData?.email || ""} disabled />
+        </Field>
+        <Field id="name" label="Display name" hint="Shown at the top of your public page.">
+          <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Jane Doe" autoComplete="name" />
+        </Field>
+        <Field id="username" label="Username" hint="Short handle for your page, without spaces.">
+          <PrefixField prefix="@" alwaysShowPrefix>
             <Input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
-            />
-          </div>
-
-          {/* Name */}
-          <div className="flex flex-col">
-            <label className="text-gray-600 dark:text-gray-300 mb-2 font-semibold">Name</label>
-
-            <Input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
-              placeholder="Enter your name"
-            />
-          </div>
-
-          {/* Username */}
-          <div className="flex flex-col">
-            <label className="text-gray-600 dark:text-gray-300 mb-2 font-semibold">Username</label>
-            <Input
-              type="text"
+              id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
-              placeholder="Enter your username"
+              className="h-11 border-0 shadow-none focus-visible:ring-0"
+              placeholder="janedoe"
+              autoComplete="username"
             />
-          </div>
-
-          {/* Save Button */}
-          <div className="text-center">
-            <Button onClick={handleSubmit} variant={"default"}>
-              Save Changes
-            </Button>
-          </div>
+          </PrefixField>
+        </Field>
+        <div className="flex gap-2 pt-2">
+          <Button type="submit" className="h-11 flex-1" disabled={saving || !name.trim()}>
+            {saving ? "Saving…" : "Save"}
+          </Button>
+          <Button type="button" variant="outline" className="h-11" onClick={onCancel}>
+            Cancel
+          </Button>
         </div>
-      </div>
-    </div>
+      </form>
+    </PageShell>
   );
 };
 
