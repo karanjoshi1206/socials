@@ -12,7 +12,7 @@ export async function createSocial(input: Record<string, unknown>): Promise<Serv
 
 export async function getDefaultSocials(): Promise<ServiceResult<unknown>> {
   try {
-    const socials = await Socials.find();
+    const socials = await Socials.find().lean();
     return { status: 200, body: socials };
   } catch (error: unknown) {
     return { status: 500, body: { error: errorMessage(error) } };
@@ -21,7 +21,7 @@ export async function getDefaultSocials(): Promise<ServiceResult<unknown>> {
 
 export async function getSocialById(id: string): Promise<ServiceResult<unknown>> {
   try {
-    const social = await Socials.findById(id);
+    const social = await Socials.findById(id).lean();
     if (!social) {
       return { status: 404, body: { message: "Social not found" } };
     }
