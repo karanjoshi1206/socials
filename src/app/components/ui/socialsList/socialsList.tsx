@@ -2,6 +2,7 @@ import { Social } from "@/app/models/socials";
 import { dbConnect } from "@/lib/db/mongoose";
 import { getDefaultSocials } from "@/lib/services/socials";
 import SocialCard from "../socialCard/socialCard";
+import { toSocialCardProps } from "../socialCard/toSocialCardProps";
 import { PageShell } from "@/app/components/layout/pageShell";
 import Link from "next/link";
 
@@ -26,7 +27,7 @@ const SocialsList = async () => {
       ) : (
         <div className="space-y-3">
           {data.map((social: Social) => (
-            <SocialCard key={social._id} {...social} />
+            <SocialCard key={social._id} {...toSocialCardProps(social)} />
           ))}
         </div>
       )}

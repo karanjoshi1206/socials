@@ -18,7 +18,7 @@ const SocialCard = ({ title, socialLogo, _id }: SocialCardProps) => {
         {socialLogo ? (
           <Image src={`${process.env.NEXT_PUBLIC_CDN_URL}/${socialLogo}`} alt="" height={28} width={28} className="rounded-md" />
         ) : (
-          <span className="text-sm font-medium">{title[0]}</span>
+          <span className="text-sm font-medium">{title?.[0] ?? "?"}</span>
         )}
       </div>
       <span className="flex-1 font-medium">{title}</span>
