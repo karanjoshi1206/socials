@@ -4,6 +4,23 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { ExternalLink } from "lucide-react";
+import { parseUsername, publicPagePath } from "@/lib/username";
+
+function storedPublicHref(): string | null {
+  try {
+    const stored = JSON.parse(localStorage.getItem("dbUserData") || "{}");
+    const parsed = parseUsername(stored?.userName || stored?.username || "");
+    if (parsed.ok) {
+      return publicPagePath(stored);
+    }
+    if (stored?._id) {
+      return "/profile";
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
 
 export function PublicPageLink({
   className,
@@ -12,47 +29,37 @@ export function PublicPageLink({
   className?: string;
   children?: React.ReactNode;
 }) {
-  const [userId, setUserId] = useState<string | null>(null);
+  const [href, setHref] = useState<string | null>(null);
 
   useEffect(() => {
-    try {
-      const stored = JSON.parse(localStorage.getItem("dbUserData") || "{}");
-      setUserId(stored?._id || null);
-    } catch {
-      setUserId(null);
-    }
+    setHref(storedPublicHref());
   }, []);
 
-  if (!userId) {
+  if (!href) {
     return null;
   }
 
   return (
-    <Link href={`/${userId}`} className={className}>
+    <Link href={href} className={className}>
       {children ?? "My page"}
     </Link>
   );
 }
 
 export function PublicPageMenuItem() {
-  const [userId, setUserId] = useState<string | null>(null);
+  const [href, setHref] = useState<string | null>(null);
 
   useEffect(() => {
-    try {
-      const stored = JSON.parse(localStorage.getItem("dbUserData") || "{}");
-      setUserId(stored?._id || null);
-    } catch {
-      setUserId(null);
-    }
+    setHref(storedPublicHref());
   }, []);
 
-  if (!userId) {
+  if (!href) {
     return null;
   }
 
   return (
     <DropdownMenuItem asChild>
-      <Link href={`/${userId}`} className="flex cursor-pointer items-center justify-between">
+      <Link href={href} className="flex cursor-pointer items-center justify-between">
         My page
         <ExternalLink size={16} />
       </Link>

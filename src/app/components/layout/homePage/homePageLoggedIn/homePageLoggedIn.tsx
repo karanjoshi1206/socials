@@ -5,10 +5,12 @@ import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import UserSocialCard from "@/app/components/ui/userSocialCard/userSocialCard";
 import RedirectButton from "./redirectButton";
+import ShareButton from "@/app/components/ui/shareButton/shareButton";
 import { USER_SOCIAL } from "@/app/models/socials";
 import { PageShell } from "@/app/components/layout/pageShell";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { publicPagePath } from "@/lib/username";
 
 async function getUserInfo(email: string) {
   await dbConnect();
@@ -56,15 +58,30 @@ const HomePageLoggedIn = async () => {
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Hi, {firstName}</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Your socials, ready to share.</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {userInfo?.userName ? `Your page is /${userInfo.userName}` : "Set a username, then share one link."}
+          </p>
         </div>
         <div className="flex gap-2">
           <Button asChild variant="outline">
             <Link href="/choose-socials">Add</Link>
           </Button>
-          {userInfo?.userId && <RedirectButton userId={userInfo.userId} />}
+          {userInfo && <RedirectButton username={userInfo.userName} userId={userInfo.userId} />}
+          {userInfo?.userName && <ShareButton path={publicPagePath({ userName: userInfo.userName, _id: userInfo.userId })} />}
         </div>
       </div>
+
+      {userInfo && !userInfo.userName && (
+        <div className="mb-6 rounded-2xl border bg-card p-4 shadow-sm sm:flex sm:items-center sm:justify-between">
+          <div>
+            <p className="font-medium">Claim your username</p>
+            <p className="mt-1 text-sm text-muted-foreground">Your public page will be /username — pick something unique.</p>
+          </div>
+          <Button asChild className="mt-3 sm:mt-0">
+            <Link href="/profile">Choose username</Link>
+          </Button>
+        </div>
+      )}
 
       {handles.length === 0 ? (
         <div className="rounded-2xl border border-dashed bg-card px-6 py-16 text-center shadow-sm">

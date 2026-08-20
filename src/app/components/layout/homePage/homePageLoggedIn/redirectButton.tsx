@@ -3,12 +3,13 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-const RedirectButton = ({ userId }: { userId?: string }) => {
-  const href = userId ? `/${userId}` : "/";
+const RedirectButton = ({ username, userId }: { username?: string; userId?: string }) => {
+  const href = username ? `/${username}` : userId ? "/profile" : "/";
+  const label = username ? "View public page" : "Set a username";
 
   return (
     <Button asChild variant="outline">
-      <Link href={href}>View public page</Link>
+      <Link href={href}>{label}</Link>
     </Button>
   );
 };

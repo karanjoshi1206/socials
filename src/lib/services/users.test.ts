@@ -18,7 +18,7 @@ vi.mock("@/lib/db/models/social", () => ({
 
 import Users from "@/lib/db/models/user";
 import Socials from "@/lib/db/models/social";
-import { addHandle, deleteUserHandle, getUserByEmail, getUserHandlesByEmail, getUserHandlesById, updateUser, updateUserHandle } from "./users";
+import { addHandle, deleteUserHandle, getUserByEmail, getUserHandlesByEmail, getUserHandlesById, getUserHandlesByUsername, updateUser, updateUserHandle } from "./users";
 
 function populatedQuery(result: unknown) {
   populate.mockResolvedValue(result);
@@ -53,6 +53,42 @@ describe("user services", () => {
       status: 400,
       body: { message: "Username already exists" }
     });
+  });
+
+  it("rejects invalid usernames before touching the database", async () => {
+    await expect(updateUser({ email: "a@b.com", name: "A", userName: "profile" })).resolves.toEqual({
+      status: 400,
+      body: { message: "That username is reserved" }
+    });
+    expect(Users.findOneAndUpdate).not.toHaveBeenCalled();
+  });
+
+  it("stores a normalized lowercase username", async () => {
+    vi.mocked(Users.findOneAndUpdate).mockResolvedValue({ userName: "karan_joshi" } as never);
+
+    await expect(updateUser({ email: "a@b.com", name: "A", userName: " @Karan_Joshi " })).resolves.toMatchObject({
+      status: 200,
+      body: { message: "User updated successfully" }
+    });
+    expect(Users.findOneAndUpdate).toHaveBeenCalledWith({ email: "a@b.com" }, { $set: { name: "A", userName: "karan_joshi" } }, { new: true });
+  });
+
+  it("looks up public handles by username", async () => {
+    const user = { _id: "u1", userName: "karan", name: "Karan", socialHandles: [] };
+    vi.mocked(Users.findOne).mockReturnValue(populatedQuery(user) as never);
+
+    await expect(getUserHandlesByUsername("Karan")).resolves.toEqual({
+      status: 200,
+      body: { username: "karan", userName: "karan", name: "Karan", handles: [], _id: "u1" }
+    });
+  });
+
+  it("does not look up reserved public slugs as usernames", async () => {
+    await expect(getUserHandlesByUsername("profile")).resolves.toEqual({
+      status: 404,
+      body: { message: "User not found" }
+    });
+    expect(Users.findOne).not.toHaveBeenCalled();
   });
 
   it("rejects adding a handle when user or platform is missing", async () => {

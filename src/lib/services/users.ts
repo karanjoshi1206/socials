@@ -1,6 +1,7 @@
 import Users from "@/lib/db/models/user";
 import Socials from "@/lib/db/models/social";
 import { errorMessage, isDuplicateKeyError, platformIdOf, ServiceResult } from "./types";
+import { parseUsername } from "@/lib/username";
 
 function toUserHandlesPayload(user: {
   _id: { toString(): string };
@@ -13,7 +14,7 @@ function toUserHandlesPayload(user: {
     userName: user.userName,
     name: user.name,
     handles: user.socialHandles,
-    _id: user._id
+    _id: String(user._id)
   };
 }
 
@@ -38,8 +39,13 @@ export async function updateUser({
   name: string;
   userName: string;
 }): Promise<ServiceResult<unknown>> {
+  const parsed = parseUsername(userName);
+  if (!parsed.ok) {
+    return { status: 400, body: { message: parsed.error } };
+  }
+
   try {
-    const updatedUser = await Users.findOneAndUpdate({ email }, { $set: { name, userName } }, { new: true });
+    const updatedUser = await Users.findOneAndUpdate({ email }, { $set: { name, userName: parsed.username } }, { new: true });
     return { status: 200, body: { message: "User updated successfully", data: updatedUser } };
   } catch (error: unknown) {
     if (isDuplicateKeyError(error)) {
@@ -98,6 +104,23 @@ export async function getUserHandlesByEmail(email: string): Promise<ServiceResul
 export async function getUserHandlesById(id: string): Promise<ServiceResult<unknown>> {
   try {
     const user = await Users.findById(id).populate("socialHandles.platform");
+    if (!user) {
+      return { status: 404, body: { message: "User not found" } };
+    }
+    return { status: 200, body: toUserHandlesPayload(user) };
+  } catch {
+    return { status: 404, body: { message: "User not found" } };
+  }
+}
+
+export async function getUserHandlesByUsername(username: string): Promise<ServiceResult<unknown>> {
+  const parsed = parseUsername(username);
+  if (!parsed.ok) {
+    return { status: 404, body: { message: "User not found" } };
+  }
+
+  try {
+    const user = await Users.findOne({ userName: { $regex: `^${parsed.username}$`, $options: "i" } }).populate("socialHandles.platform");
     if (!user) {
       return { status: 404, body: { message: "User not found" } };
     }
