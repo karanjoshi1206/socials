@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { USER } from "@/app/models/user";
 import AuthButton from "../../ui/authButton/authButton";
 import { PageShell } from "@/app/components/layout/pageShell";
+import ShareButton from "@/app/components/ui/shareButton/shareButton";
+import { publicPagePath } from "@/lib/username";
 
 const Profile = () => {
   const [userData, setUserData] = useState<USER | null>();
@@ -72,7 +74,9 @@ const Profile = () => {
   return (
     <PageShell width="narrow">
       <h1 className="text-2xl font-semibold tracking-tight">{userData?.name || "Profile"}</h1>
-      <p className="mt-1 mb-8 text-sm text-muted-foreground">{userData?.userName ? `@${userData.userName}` : "Add a username so your page is easier to share."}</p>
+      <p className="mt-1 mb-8 text-sm text-muted-foreground">
+        {userData?.userName ? `Public page: /${userData.userName}` : "Add a unique username to get a shareable /username link."}
+      </p>
       <div className="divide-y overflow-hidden rounded-2xl border bg-card shadow-sm">
         {rows.map((row) => (
           <div key={row.label} className="flex items-center justify-between px-4 py-3 text-sm">
@@ -81,9 +85,12 @@ const Profile = () => {
           </div>
         ))}
       </div>
-      <Button className="mt-6 w-full" onClick={() => setIsEditing(true)}>
-        Edit profile
-      </Button>
+      <div className="mt-6 flex flex-col gap-2 sm:flex-row">
+        <Button className="w-full" onClick={() => setIsEditing(true)}>
+          Edit profile
+        </Button>
+        {userData?.userName && <ShareButton className="w-full sm:w-auto" path={publicPagePath(userData)} />}
+      </div>
     </PageShell>
   );
 };

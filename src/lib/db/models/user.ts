@@ -20,7 +20,10 @@ const UserSchema = new Schema(
     userName: {
       type: String,
       required: false,
-      unique: true
+      unique: true,
+      sparse: true,
+      lowercase: true,
+      trim: true
     },
     socialHandles: [SocialHandleSchema]
   },

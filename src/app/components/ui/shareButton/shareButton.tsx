@@ -5,29 +5,53 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { FacebookShareButton, FacebookIcon, PinterestShareButton, PinterestIcon, RedditShareButton, RedditIcon, WhatsappShareButton, WhatsappIcon, LinkedinShareButton, LinkedinIcon } from "next-share";
 import CopyToClipBoard from "../copyToClipBoard/copyToClipBoard";
 import { useEffect, useState } from "react";
+import QRCode from "qrcode";
+import { publicPagePath } from "@/lib/username";
 
-const ShareButton = () => {
+const ShareButton = ({ path, className }: { path?: string; className?: string }) => {
   const [shareUrl, setShareUrl] = useState("");
+  const [qrDataUrl, setQrDataUrl] = useState("");
 
   useEffect(() => {
-    try {
-      const id = JSON.parse(localStorage.getItem("dbUserData") || "{}")?._id;
-      setShareUrl(id ? `${window.location.origin}/${id}` : window.location.href);
-    } catch {
-      setShareUrl(window.location.href);
+    const origin = window.location.origin;
+    let nextPath = path;
+
+    if (!nextPath) {
+      try {
+        nextPath = publicPagePath(JSON.parse(localStorage.getItem("dbUserData") || "{}"));
+      } catch {
+        nextPath = window.location.pathname;
+      }
     }
-  }, []);
+
+    const url = nextPath.startsWith("http") ? nextPath : `${origin}${nextPath.startsWith("/") ? nextPath : `/${nextPath}`}`;
+    setShareUrl(url);
+
+    QRCode.toDataURL(url, { margin: 1, width: 240, color: { dark: "#1c1917", light: "#ffffff" } })
+      .then(setQrDataUrl)
+      .catch(() => setQrDataUrl(""));
+  }, [path]);
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Share</Button>
+        <Button variant="outline" className={className}>
+          Share
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[400px]">
         <DialogHeader>
           <DialogTitle>Share this page</DialogTitle>
-          <DialogDescription>Copy the link or send it from an app.</DialogDescription>
+          <DialogDescription>Scan the QR code or copy the link.</DialogDescription>
         </DialogHeader>
+        {qrDataUrl ? (
+          // Data URLs from `qrcode` are not remote assets; next/image is the wrong tool here.
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={qrDataUrl} alt="QR code for this public page" className="mx-auto h-48 w-48 rounded-xl border bg-white p-2" />
+        ) : (
+          <div className="mx-auto h-48 w-48 animate-pulse rounded-xl bg-muted" />
+        )}
+        <p className="truncate text-center text-sm text-muted-foreground">{shareUrl}</p>
         <div className="flex justify-center gap-3">
           <FacebookShareButton url={shareUrl}>
             <FacebookIcon size={32} round />

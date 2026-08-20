@@ -1,27 +1,55 @@
 import ShareButton from "@/app/components/ui/shareButton/shareButton";
 import { USER_SOCIAL } from "@/app/models/socials";
 import { dbConnect } from "@/lib/db/mongoose";
-import { getUserHandlesById } from "@/lib/services/users";
+import { getUserHandlesById, getUserHandlesByUsername } from "@/lib/services/users";
+import { isMongoObjectId, publicPagePath } from "@/lib/username";
 import Image from "next/image";
 import { PageShell } from "@/app/components/layout/pageShell";
 import { ArrowUpRight } from "lucide-react";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
+type PublicProfile = {
+  name?: string;
+  username?: string;
+  userName?: string;
+  handles?: USER_SOCIAL[];
+  _id?: string;
+};
+
 const User = async ({ params }: { params: { userId: string } }) => {
   await dbConnect();
-  const getUserData = await getUserHandlesById(params.userId);
-  const userHandles = getUserData.body as {
-    name?: string;
-    username?: string;
-    handles?: USER_SOCIAL[];
-  } | null;
+  const slug = decodeURIComponent(params.userId);
 
-  if (!userHandles?.handles?.length) {
+  const getUserData = isMongoObjectId(slug) ? await getUserHandlesById(slug) : await getUserHandlesByUsername(slug);
+  const userHandles = (getUserData.status === 200 ? getUserData.body : null) as PublicProfile | null;
+
+  if (!userHandles) {
     return (
       <PageShell width="narrow" className="text-center">
-        <h1 className="text-2xl font-semibold tracking-tight">Nothing here yet</h1>
-        <p className="mt-2 text-sm text-muted-foreground">This page has no socials to show.</p>
+        <h1 className="text-2xl font-semibold tracking-tight">Page not found</h1>
+        <p className="mt-2 text-sm text-muted-foreground">That username does not exist.</p>
+      </PageShell>
+    );
+  }
+
+  const canonicalPath = publicPagePath(userHandles);
+  if (canonicalPath !== `/${slug}` && userHandles.username) {
+    redirect(canonicalPath);
+  }
+
+  const sharePath = canonicalPath.startsWith("/") ? canonicalPath : `/${slug}`;
+
+  if (!userHandles.handles?.length) {
+    return (
+      <PageShell width="narrow" className="text-center">
+        <h1 className="text-2xl font-semibold tracking-tight">{userHandles.name || "This page"}</h1>
+        {userHandles.username && <p className="mt-1 text-sm text-muted-foreground">@{userHandles.username}</p>}
+        <p className="mt-4 text-sm text-muted-foreground">No socials to show yet.</p>
+        <div className="mt-8 flex justify-center">
+          <ShareButton path={sharePath} />
+        </div>
       </PageShell>
     );
   }
@@ -53,7 +81,7 @@ const User = async ({ params }: { params: { userId: string } }) => {
         ))}
       </div>
       <div className="mt-8 flex justify-center">
-        <ShareButton />
+        <ShareButton path={sharePath} />
       </div>
     </PageShell>
   );
