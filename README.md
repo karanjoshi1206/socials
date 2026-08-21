@@ -1,8 +1,31 @@
-This is a [Next.js](https://nextjs.org) app that stores users and social handles in MongoDB.
+# socials
 
-The previous Express backend is no longer required. All API routes live in this app under `/api/serverApi` so you can deploy the whole product on Vercel.
+A public page for your online self. Collect the profiles you already have — Instagram, GitHub, LinkedIn, and the rest — then share **one URL** instead of a list of usernames.
+
+Live: [socials-blond-ten.vercel.app](https://socials-blond-ten.vercel.app)
+
+## Product
+
+Sign in with Google, claim a unique username, add the handles people already use to find you, and share a link like `https://socials-blond-ten.vercel.app/yourname`. Anyone who opens that URL sees your name and a list of platforms they can tap through to.
+
+- **One public page** — every social you add lands on the same profile.
+- **Unique username** — pick a handle on Profile. Your shareable URL is `/username` (3–20 characters: letters, numbers, hyphens, underscores).
+- **Share with a QR code** — the share dialog shows a QR that opens your public page, plus copy-link and social buttons.
+- **Google sign-in** — no extra password. Your page is created on first login.
+- **Edit anytime** — add, change, or remove handles; update your display name and username from Profile.
+
+### How it works
+
+1. Sign in with Google.
+2. Claim a username so your page lives at `/yourname`.
+3. Add the platforms you use (username only — the app attaches the platform URL).
+4. Share the link or QR. Put it in a bio, resume, or chat.
+
+Links that used a user id still work and redirect to `/username` once a handle is set.
 
 ## Local development
+
+This is a [Next.js](https://nextjs.org) app. Users, usernames, and social handles live in MongoDB. API routes are in this repo under `/api/serverApi`, so the whole product deploys on Vercel — the previous Express backend is not required.
 
 ```bash
 npm install
@@ -11,6 +34,11 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
+
+```bash
+npm test
+npm run build
+```
 
 ## Environment variables
 
@@ -45,13 +73,10 @@ MongoDB Atlas must allow the Vercel deployment IPs (or `0.0.0.0/0` if you accept
 | `DELETE` | `/api/serverApi/users/handles` | Delete a handle |
 | `GET` | `/api/serverApi/health` | Mongo connectivity check |
 
+Public pages are rendered at `/{username}` (and still at `/{user-id}` for older links).
+
 ## Deploy on Vercel
 
 1. Import this GitHub repo in Vercel.
 2. Add the environment variables above.
 3. Deploy. The app and API ship together; no separate backend service is needed.
-
-```bash
-npm test
-npm run build
-```
